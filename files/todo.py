@@ -1,37 +1,8 @@
 Исходный текст:
-ClassName
-	__init__ ()
-		x = 123
-		f = 14
-	get ()
-		k = 15
-		z = 123
-		print(123)
-		getValue(512)
-		TestClass
-			__init__ ()
-				x = 123
-				set (var, a)
-					get = set
+print (str string)
+	stdwrite string
 
-Преобразованный оптимизатором:
-ClassName {
-    __init__() {
-        x = 123;
-        f = 14;
-    }
-    get() {
-        k = 15;
-		z = 123;
-		print(123);
-		getValue(512);
-		TestClass {
-			__init__() {
-				x = 123;
-				set(var, a) {
-					get = set;
-				}
-			}
-		}
-    }
-}
+Текст после работы лексера:
+[FUNCTION_DECLARATION:"print"][SPACE:" "][LPAR:"("][VARIABLE:"str"][SPACE:" "][VARIABLE:"string"][RPAR:")"][LBRACE:"{"]
+	[DIRECTIVES_STDWRITE:"stdwrite"][SPACE:" "][VARIABLE:"string"][DOTCOMMA:";"]
+[RBRACE:"}"][DOLLAR:"$"]

@@ -38,20 +38,42 @@ class Parser:
 			self.consume(DIRECTIVES_STDWRITE)
 			self.consume(SPACE)
 			return DirectiveStatement(self.vm, current.type, self.expression())
-		return self.cond()
-
-	def cond(self):
-		if self.match(OPERATORS_IF) or self.match(OPERATORS_ELIF) or self.match(OPERATORS_ELSE):
-			if self.get(-1).type == OPERATORS_ELSE:
-				return ConditionalExpression(_type=OPERATORS_ELSE)
-			return self.ifelse()
-		raise Exception(exceptions.UNKNOWN_CONSTRUCTION)
-
-	def ifelse(self):
-		result = self.expression()
-		return result
-
+		return self.conditional_statement()
 	
+	def conditional_statement(self):
+		current = self.get(0)
+		if current.type == OPERATORS_IF and self.get(1).type == SPACE:
+			return ConditionalStatement(self.vm, self.oneconditional_statement(), self.oneconditional_statement(), self.oneconditional_statement())
+		raise Exception(exceptions.UNKNOWN_CONSTRUCTION)
+	
+	def oneconditional_statement(self):
+		current = self.get(0)
+		if current.type == OPERATORS_IF or current.type == OPERATORS_ELIF and self.get(1).type == SPACE:
+			return OneConditionalStatement(self.vm, self.expression(), self.block())
+		return OneConditionalStatement(self.vm, True, self.body())
+
+	def block(self):
+		current = self.get(0)
+		if current.type == LBRACE:
+			self.consume(LBRACE)
+			block = BlockStatement(self.vm, [])
+			while not self.match(RBRACE):
+				block.append(self.statement())
+			self.consume(RBRACE)
+			return block
+
+	# def declaration(self):
+	# 	current = self.get(0)
+	# 	if current.type == FUNCTION_DECLARATION and self.get(1).type == SPACE and self.get(2).type == LPAR:
+	# 		print("Декларация функции")
+	# 		self.consume(FUNCTION_DECLARATION)
+	# 		self.consume(SPACE)
+	# 		self.consume(LPAR)
+	# 		exit()
+	# 		return FunctionStatement(self.vm, current.type, self.arguments(), self.body())
+
+	# 	raise Exception(exceptions.UNKNOWN_CONSTRUCTION)
+
 	#Выражения. Например, 15 == 15 или (1 - f) * 2
 	def expression(self):
 		return self.logicalor()

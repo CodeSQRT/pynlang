@@ -59,9 +59,9 @@ class NLang:
 		# print(self.lexedlines[0])
 		for line in self.lexedlines:
 			for token in line.tokens:
-				# print(f"[{NToken_ConstantName(token.type)}:\"{token.value}\"]", end="")
+		# 		print(f"[{NToken_ConstantName(token.type)}:\"{token.value}\"]", end="")
 				print(f"{token.value}", end="")
-			# print(f"Табы: {line.tabs}")
+		# 	# print(f"Табы: {line.tabs}")
 			print()
-			print()
+		# 	print()
 		# self.runner()
